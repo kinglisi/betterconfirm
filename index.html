@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="modal.css">
+        <script src="setup.js"></script>
+
+        <!-- Script must load after everything else (If you have dynamic loaded content check the script below) -->
+        <script src="script.js" defer></script>
+
+
+        <!-- This script is used for when your content laods dynamically, a.k.a your content comes after everything is loaded. This is a more intensive script, if you don't know what setInterval is (this uses it) you do not have anything to worry you may use it. If you do please check the script out it's neatly written so you understand how it works. -->
+        <!-- Uncomment to use the dynamic script -->
+        <!-- <script src="dynamic_script.js></script> -->
+    </head>
+    <body>
+        <h1>Better Confirmations</h1>
+        <p>Simply because I have had many reasons to not use the default confirm as listed below. You can use your own modal by modifying the "setup.js", the current modal is just for example.</p>
+3rd. You cannot customize what "OK" and "Cancel" say
+        <ol>
+            <li>Default confirm function pauses the entire web page when the confirmation shows up</li>
+            <li>The confirmation styling depends entirely on the browser. (You have no control over it's style or where it shows up)</li>
+            <li>You are unable to customize the answers for most browsers. In which case questions such as "Are you sure?", make absolutely no sense simply because usually your answer options are "OK" and "Cancel".</li>
+        </ol>
+        <p>This script shows a way to do it with yes and no, however the script is easy to read and you can continue adding more options to the answer list, if there's much demand I will add a version where you can have any amount of answers</p>
+
+        <h2>Script's Use cases</h2>
+        <p>This repository shows two separate scripts, 1st fixing the confirm function, and 2nd making confirmation straight from html because I have had a lot of cases where I had to write extra scripts for a simple confirmation in tables, just like the first example.</p>
+        <p>With these scripts you will be able to have confirmations that don't pause the website, confirmations use Promises, meaning you can have preset functions to do an action without checking if what is returned is "true" or "false" as you might have had to do with the ordinary confirm function</p>
+
+        <h2>Examples:</h2>
+        <ol>
+            <li>Confirmation without extra scripting</li>
+            <li>Confirmation with custom function</li>
+            <li>Raw confirm usage, (The above examples use both confirm script and inline html confirmation, this example will show the usage of the function itself)</li>
+        </ol>
+
+        <h2>1st Example</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Greeting</th>
+                    <th>Comment</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Example 1</td>
+                    <td>Hello</td>
+                    <td>Example with normal href (a lot of applications use backend and only send "href" to another website, this will do nothing due to no backend. But in a real application it would send the user to the href after accepting</td>
+                    <td><a confirmation="Are you sure you wish to delete this greeting?|Yes|No" href="#delete_1" class="ms-3">Delete</a></td>
+                </tr>
+
+                <tr>
+                    <td>Example 2</td>
+                    <td>Greetings!</td>
+                    <td>Example with inline javacript execution (You can just put functionName(), and then make the function below in a script)</td>
+                    <td><a confirmation="Are you sure you wish to delete this greeting?|Assuredly|Not really" execute-confirm="alert('confirmed')" execute-cancel="cancelExample()" href="#" class="ms-3">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            function cancelExample() {
+                alert('Cancelled');
+            }
+        </script>
+
+
+        <h2>Example 3</h2>
+        <form id="confirmation_test">
+            <div>
+                <label for="confirm_message">Confirmation message</label>
+                <input id="confirm_message" placeholder="Confirmation message" required>
+            </div>
+
+            <div>
+                <label for="yes_message">Confirmation approve message</label>
+                <input id="yes_message" placeholder="Confirmation approve message" required>
+            </div>
+
+            <div>
+                <label for="no_message">Confirmation disapprove message</label>
+                <input id="no_message" placeholder="Confirmation disapprove message" required>
+            </div>
+            
+            <div>
+                <button type="submit">Show Modal</button>
+            </div>
+        </form>
+
+        <script>
+            let confirm_form = document.getElementById('confirmation_test');
+            confirm_form.addEventListener('submit', e => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (confirm_form.checkValidity() == false) {
+                    alert('You must fill all the inputs in the form');
+                    return false;
+                }
+
+                const confirmMessage = document.getElementById('confirm_message');
+                const yesMessage = document.getElementById('yes_message');
+                const noMessage = document.getElementById('no_message');
+
+                confirm(confirmMessage.value, yesMessage.value, noMessage.value).then(() => {
+                    alert('Approved');
+                })
+
+                // Once again, this part is not required, this part is only if you wish to do something when they click cancel, otherwise you can delete the whole three lines.
+                .catch(() => {
+                    alert('Disapproved');
+                });
+
+                return false;
+            });
+        </script>
+
+
+
+
+
+
+<!-- Modal, made by Zaransoftline -->
+<!-- 
+Unfortuantely the modal will be opened by the script not this, but it's very thoughtful to add this.
+<div class="Lisii">
+    <h2 class="Lisi">Modal for Lisi</h2>
+    <button id="myBtn">Here</button>
+</div>
+-->
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirmation</h2>
+            <span class="close"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div class="modal-body">
+            <h3 id="message"></h3>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-bth" id="cancel-text" type="reset"></button>
+            <button class="modal-bth-ok" id="ok-text" type="submit"></button>
+        </div>
+    </div>
+</div>
+<script>
+let modal = document.getElementById("myModal");
+// let btn = document.getElementById("myBtn");
+let span = document.getElementsByClassName("close")[0];
+ 
+/*
+btn.addEventListener('click', () => {
+  modal.style.display = "block";
+})
+*/
+
+/*
+span.addEventListener('click', () => {
+  modal.style.display = "none";
+})
+*/
+
+window.addEventListener('click', () => {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+})
+
+</script>
+    </body>
+</html>

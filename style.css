@@ -1,0 +1,29 @@
+/* This is used to just make the modal actually look as it does, this isn't required for the script itself */
+body {
+    background-color: #eee;
+    margin: 3em;
+}
+
+table th, table td{
+    margin: 0;
+    padding: 1em;
+    border: 2px solid #000;
+}
+
+
+form > div {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+form > div input {
+    width: 30em;
+    padding: 1em;
+}
+
+
+form button {
+    padding: 1em;
+    width: 32.2em;
+}
