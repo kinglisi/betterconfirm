@@ -1,4 +1,4 @@
-# betterconfirm
+# Better Confirmation
 Custom confirmation, running away from automatic browser confirmation. And quick confirm html attribute.
 
 The repo is purely something I made due to the frustration of "confirm" function in JavaScript absolutely destroying my life.
